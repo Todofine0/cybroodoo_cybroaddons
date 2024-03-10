@@ -1,0 +1,68 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* amount_in_words_invoice
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-30 09:27+0000\n"
+"PO-Revision-Date: 2023-12-30 06:07-0400\n"
+"Last-Translator: Raymond Salomon Soto <raymondsalomonsoto@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"Language: es\n"
+"X-Generator: Poedit 1.7.5\n"
+
+#. module: amount_in_words_invoice
+#: model_terms:ir.ui.view,arch_db:amount_in_words_invoice.invoice_report_view_amount_in_words
+#: model_terms:ir.ui.view,arch_db:amount_in_words_invoice.purchase_report_view_amount_in_words
+#: model_terms:ir.ui.view,arch_db:amount_in_words_invoice.sale_report_view_amount_in_words
+msgid ""
+"<span>\n"
+"                    <strong>Amount in Words (Total) :</strong>\n"
+"                </span>"
+msgstr ""
+"<span>\n"
+"                    <strong>Monto en Letras (Total) :</strong>\n"
+"                </span>"
+
+#. module: amount_in_words_invoice
+#: model:ir.model.fields,field_description:amount_in_words_invoice.field_sale_order__number_to_words
+msgid "Amount in Words (Total) :"
+msgstr "Monto en Letras (Total) :"
+
+#. module: amount_in_words_invoice
+#: model:ir.model.fields,field_description:amount_in_words_invoice.field_account_bank_statement_line__number_to_words
+#: model:ir.model.fields,field_description:amount_in_words_invoice.field_account_move__number_to_words
+#: model:ir.model.fields,field_description:amount_in_words_invoice.field_account_payment__number_to_words
+#: model:ir.model.fields,field_description:amount_in_words_invoice.field_purchase_order__number_to_words
+msgid "Amount in Words (Total) : "
+msgstr "Monto en Letras (Total) :"
+
+#. module: amount_in_words_invoice
+#: model:ir.model,name:amount_in_words_invoice.model_account_move
+msgid "Journal Entry"
+msgstr "Asiento Diario"
+
+#. module: amount_in_words_invoice
+#: model:ir.model,name:amount_in_words_invoice.model_purchase_order
+msgid "Purchase Order"
+msgstr "Orden de Compra"
+
+#. module: amount_in_words_invoice
+#: model:ir.model,name:amount_in_words_invoice.model_sale_order
+msgid "Sales Order"
+msgstr "Pedido de Venta"
+
+#. module: amount_in_words_invoice
+#: model:ir.model.fields,help:amount_in_words_invoice.field_account_bank_statement_line__number_to_words
+#: model:ir.model.fields,help:amount_in_words_invoice.field_account_move__number_to_words
+#: model:ir.model.fields,help:amount_in_words_invoice.field_account_payment__number_to_words
+#: model:ir.model.fields,help:amount_in_words_invoice.field_purchase_order__number_to_words
+#: model:ir.model.fields,help:amount_in_words_invoice.field_sale_order__number_to_words
+msgid "To showing total amount in words"
+msgstr "Para mostrar el total en letras"
