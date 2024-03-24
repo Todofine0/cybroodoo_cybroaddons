@@ -2,13 +2,13 @@
 <odoo>
     <!-- Extends the 'website.footer_custom' template by adding a WhatsApp chat link to the
     social media section of the website footer.-->
-    <template id="ChatToCompany" name="Chat With Company" inherit_id="website.footer_custom">
+    <!-- <template id="ChatToCompany" name="Chat With Company" inherit_id="website.footer_custom">
         <xpath expr="//div[hasclass('s_social_media')]" position="inside">
             <div class="cy_whatsapp_web">
                 <i class="fa fa-whatsapp cy-icon"/>
-            </div>
+            </div> -->
             <!-- Modal showing message templates -->
-            <div class="modal" id="ModalWhatsapp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: none;" aria-hidden="true">
+            <!-- <div class="modal" id="ModalWhatsapp" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" style="display: none;" aria-hidden="true">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -73,8 +73,8 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- Modal ends -->
-        </xpath>
-    </template>
+        <!-- </xpath>
+    </template> -->
 </odoo>
