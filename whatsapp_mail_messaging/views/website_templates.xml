@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Extends the 'website.footer_custom' template by adding a WhatsApp chat link to the
-    social media section of the website footer. RAYMOND: MODIFICANDO-->
+    social media section of the website footer. RAYMOND: MODIFICANDO DOM 24 MARZO 2024 3:35 PM-->
     <template id="ChatToCompany" name="Chat With Company" inherit_id="website.footer_custom">
         <xpath expr="//div[hasclass('s_social_media text-start o_not_editable')]" position="inside">
             <div class="cy_whatsapp_web">
