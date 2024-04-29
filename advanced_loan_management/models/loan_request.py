@@ -241,7 +241,7 @@ class LoanRequest(models.Model):
         self.request = True
         for loan in self:
             loan.repayment_lines_ids.unlink()
-            date_start = datetime.strptime(str(loan.date),'%Y-%m-%d') + relativedelta(months=1)
+            date_start = datetime.strptime(str(loan.date),'%Y-%m-%d') + relativedelta(days=1)
             amount = loan.loan_amount / loan.tenure
             interest = loan.loan_amount * loan.interest_rate
             interest_amount = interest / loan.tenure
@@ -262,5 +262,5 @@ class LoanRequest(models.Model):
                                                          'demo_'
                                                          'loan_accounts').id,
                     'loan_id': loan.id})
-                date_start += relativedelta(months=1)
+                date_start += relativedelta(days=1)
         return True

@@ -33,7 +33,7 @@ class LoanTypes(models.Model):
     loan_amount = fields.Integer(string='Loan Amount', help="Loan Amount")
     tenure = fields.Integer(string='Tenure', default='1',
                             help="Amortization period")
-    tenure_plan = fields.Char(string="Tenure Plan", default='monthly',
+    tenure_plan = fields.Char(string="Tenure Plan", default='daily',
                               readonly='True', help="EMI payment plan")
     interest_rate = fields.Float(string='Interest Rate',
                                  help="Loan Interest Rate")
