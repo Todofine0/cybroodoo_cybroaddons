@@ -237,7 +237,7 @@ class LoanRequest(models.Model):
     def action_compute_repayment(self):
         """This automatically create the installment the employee need to pay to
         company based on payment start date and the no of installments.
-        """
+            """
         self.request = True
         for loan in self:
             loan.repayment_lines_ids.unlink()
@@ -248,10 +248,6 @@ class LoanRequest(models.Model):
             total_amount = amount + interest_amount
             partner = self.partner_id
             for rand_num in range(1, loan.tenure + 1):
-                interest_account_line = self.env['repayment.line'].search([('interest_account_id','=',self.interest_account_id.id)], limit=1)
-                interest_account_id = interest_account_line.interest_account_id.id if interest_account_line else False
-                repayment_account_line = self.env['repayment.line'].search([('repayment_account_id','=',self.repayment_account_id.id)], limit=1)
-                repayment_account_id = repayment_account_line.repayment_account_id.id if repayment_account_line else False
                 self.env['repayment.line'].create({
                     'name': f"{loan.name}/{rand_num}",
                     'partner_id': partner.id,
@@ -259,8 +255,12 @@ class LoanRequest(models.Model):
                     'amount': amount,
                     'interest_amount': interest_amount,
                     'total_amount': total_amount,
-                    'interest_account_id': interest_account_id,
-                    'repayment_account_id': repayment_account_id,
+                    'interest_account_id': self.env.ref('advanced_loan_management.'
+                                                        'loan_management_'
+                                                        'inrst_accounts').id,
+                    'repayment_account_id': self.env.ref('advanced_loan_management.'
+                                                         'demo_'
+                                                         'loan_accounts').id,
                     'loan_id': loan.id})
                 date_start += relativedelta(months=1)
         return True
