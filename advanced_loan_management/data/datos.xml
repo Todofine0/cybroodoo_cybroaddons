@@ -13,18 +13,21 @@
             <field name="name">Loan Disburse (Desembolso)</field>
             <field name="code">200019</field>
             <field name="account_type">liability_current</field>
+            <field name="create_asset">false</field>
         </record>
 
         <record id="loan_management_inrst_accounts" model="account.account">
             <field name="name">Loan Interest (Intereses)</field>
             <field name="code">200011</field>
             <field name="account_type">liability_current</field>
+            <field name="create_asset">false</field>
         </record>
 
         <record id="demo_loan_accounts" model="account.account">
             <field name="name">Loan Repayment (Repago)</field>
             <field name="code">200012</field>
             <field name="account_type">asset_cash</field>
+            <field name="create_asset">false</field>
         </record>
 
         <!--        Demo data for product.product-->
