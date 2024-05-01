@@ -50,12 +50,12 @@ class LoanRequest(models.Model):
     disbursal_amount = fields.Float(string="Disbursal Amount",
                                     help="Total loan amount "
                                          "available to disburse")
-    tenure = fields.Integer(string="Tenure", default=1,
-                            help="Installment period")
+    tenure = fields.Integer(string="Tenure", default=1, help="Installment period")
+    tenure_plan = fields.Selection(related="loan_type_id.tenure_plan", string="Tenure Plan", help="Installment payment plan")
     interest_rate = fields.Float(string="Interest Rate", help="Interest "
                                                               "percentage")
     date = fields.Date(string="Date", default=fields.Date.today(),
-                       readonly=True, help="Date")
+                       readonly=False, help="Date")
     partner_id = fields.Many2one('res.partner', string="Partner",
                                  required=True,
                                  help="Partner")
@@ -121,7 +121,8 @@ class LoanRequest(models.Model):
         type_id = self.loan_type_id
         self.loan_amount = type_id.loan_amount
         self.disbursal_amount = type_id.disbursal_amount
-        self.tenure = type_id.tenure
+        self.tenure = 1
+        self.tenure_plan = type_id.tenure_plan
         self.interest_rate = type_id.interest_rate
         self.documents_ids = type_id.documents_ids
 
@@ -241,7 +242,12 @@ class LoanRequest(models.Model):
         self.request = True
         for loan in self:
             loan.repayment_lines_ids.unlink()
-            date_start = datetime.strptime(str(loan.date),'%Y-%m-%d') + relativedelta(months=1)
+            if loan.tenure_plan == 'monthly':
+                date_start = datetime.strptime(str(loan.date), '%Y-%m-%d') + relativedelta(months=1)
+            elif loan.tenure_plan == 'weekly':
+                date_start = datetime.strptime(str(loan.date), '%Y-%m-%d') + relativedelta(weeks=1)
+            else:
+                date_start = datetime.strptime(str(loan.date), '%Y-%m-%d') + relativedelta(days=1)
             amount = loan.loan_amount / loan.tenure
             interest = loan.loan_amount * loan.interest_rate
             interest_amount = interest / loan.tenure
@@ -255,10 +261,13 @@ class LoanRequest(models.Model):
                     'amount': amount,
                     'interest_amount': interest_amount,
                     'total_amount': total_amount,
-                    # 'interest_account_id': self.env.ref('advanced_loan_management.interest_account_id').id,
-                    # 'repayment_account_id': self.env.ref('advanced_loan_management.repayment_account_id').id,
                     'interest_account_id': self.env['res.config.settings'].sudo().get_values().get('interest_account_id'),
                     'repayment_account_id': self.env['res.config.settings'].sudo().get_values().get('repayment_account_id'),
                     'loan_id': loan.id})
-                date_start += relativedelta(months=1)
+                if loan.tenure_plan == 'monthly':
+                    date_start += relativedelta(months=1)
+                elif loan.tenure_plan == 'weekly':
+                    date_start += relativedelta(weeks=1)
+                else:
+                    date_start += relativedelta(days=1)
         return True
