@@ -105,24 +105,37 @@ class LoanRequest(models.Model):
                    ('rejected', 'Rejected'), ('closed', 'Closed')],
         copy=False, tracking=True, default='draft', help="Loan request states")
 
+    # @api.model
+    # def create(self, vals):
+    #     """create  auto sequence for the loan request records"""
+    #     loan_count = self.env['loan.request'].search(
+    #         [('partner_id', '=', vals['partner_id']),
+    #          ('state', 'not in', ('draft', 'rejected', 'closed'))])
+    #     if loan_count:
+    #         for rec in loan_count:
+    #             # if rec.state != 'closed':
+    #             if rec.state not in ('closed', 'rejected'):
+    #                 raise UserError(
+    #                     _('The partner has already an ongoing loan.'))
+    #     else:
+    #         if vals.get('name', 'New') == 'New':
+    #             vals['name'] = self.env['ir.sequence'].next_by_code(
+    #                 'increment_loan_ref')
+    #         res = super().create(vals)
+    #         return res
+
     @api.model
     def create(self, vals):
         """create  auto sequence for the loan request records"""
-        loan_count = self.env['loan.request'].search(
-            [('partner_id', '=', vals['partner_id']),
-             ('state', 'not in', ('draft', 'rejected', 'closed'))])
-        if loan_count:
-            for rec in loan_count:
-                # if rec.state != 'closed':
-                if rec.state not in ('closed', 'rejected'):
-                    raise UserError(
-                        _('The partner has already an ongoing loan.'))
-        else:
-            if vals.get('name', 'New') == 'New':
-                vals['name'] = self.env['ir.sequence'].next_by_code(
-                    'increment_loan_ref')
-            res = super().create(vals)
-            return res
+        loan_count = self.env['loan.request'].search([
+            ('partner_id', '=', vals['partner_id']),
+            ('state', 'not in', ('draft', 'rejected', 'closed'))])
+        if len(loan_count) >= 2:
+            raise UserError(_('The partner has already 2 ongoing loans.'))
+        if vals.get('name', 'New') == 'New':
+            vals['name'] = self.env['ir.sequence'].next_by_code('increment_loan_ref')
+        res = super().create(vals)
+        return res
 
     @api.onchange('loan_type_id')
     def _onchange_loan_type_id(self):
