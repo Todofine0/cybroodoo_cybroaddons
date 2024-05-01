@@ -76,8 +76,10 @@ class RepaymentLine(models.Model):
     def action_pay_emi(self):
         """Creates invoice for each EMI"""
         time_now = self.date
-        interest_product_id = self.env.ref('loan_journal_data.loan_management_interest').id
-        repayment_product_id = self.env.ref('loan_journal_data.loan_management_repayment').id
+        # interest_product_id = self.env.ref('loan_journal_data.loan_management_interest').id
+        # repayment_product_id = self.env.ref('loan_journal_data.loan_management_repayment').id
+        interest_product_id = self.env['res.config.settings'].sudo().get_values().get('interest_product_id')
+        repayment_product_id = self.env['res.config.settings'].sudo().get_values().get('repayment_product_id')
         for rec in self:
             loan_lines_ids = self.env['repayment.line'].search(
                 [('loan_id', '=', rec.loan_id.id)], order='date asc')
