@@ -113,7 +113,8 @@ class LoanRequest(models.Model):
              ('state', 'not in', ('draft', 'rejected', 'closed'))])
         if loan_count:
             for rec in loan_count:
-                if rec.state != 'closed' or 'rejected':
+                # if rec.state != 'closed':
+                if rec.state not in ('closed', 'rejected'):
                     raise UserError(
                         _('The partner has already an ongoing loan.'))
         else:
