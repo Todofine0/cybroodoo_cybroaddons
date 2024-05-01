@@ -72,7 +72,7 @@ class RepaymentLine(models.Model):
                                            string="Repayment",
                                            store=True, default=lambda self: self.
                                       env['ir.config_parameter'].
-                                      search([('code', 'like', '200012')])
+                                      search([('code', 'like', '200012')]),
                                            help="Account For Repayment")
     invoice = fields.Boolean(string="invoice", default=False,
                              help="For monitoring the record")
