@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data noupdate="1">
-        <!--        Demo data for account.journal-->
+        <!--        Data for account.journal-->
         <record id="loan_management_journals" model="account.journal">
             <field name="company_id" ref="base.main_company"/>
             <field name="name">Disburse</field>
@@ -9,7 +9,7 @@
             <field name="type">purchase</field>
         </record>
 
-        <!--        Demo data for account.account-->
+        <!--        Data for account.account-->
         <record id="loan_management_disburse_accounts" model="account.account">
             <field name="name">Loan Disburse</field>
             <field name="code">200019</field>
@@ -29,7 +29,7 @@
             <field name="account_type">asset_cash</field>
         </record>
 
-        <!--        Demo data for product.product-->
+        <!--        Data for product.product-->
         <record id="loan_management_repayment" model="product.product">
             <field name="name">Repayment Amount</field>
             <field name="type">service</field>
