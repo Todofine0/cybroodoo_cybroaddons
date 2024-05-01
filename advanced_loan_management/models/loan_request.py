@@ -77,14 +77,22 @@ class LoanRequest(models.Model):
                                  domain="[('type', '=', 'purchase'),"
                                         "('company_id', '=', company_id)]",
                                  )
-    debit_account_id = fields.Many2one('account.account',
-                                       string="Debit account",
-                                       help="Choose account for "
-                                            "disbursement debit")
-    credit_account_id = fields.Many2one('account.account',
-                                        string="Credit account",
-                                        help="Choose account for "
-                                             "disbursement credit")
+    # debit_account_id = fields.Many2one('account.account',
+    #                                    string="Debit account",
+    #                                    help="Choose account for "
+    #                                         "disbursement debit")
+    # credit_account_id = fields.Many2one('account.account',
+    #                                     string="Credit account",
+    #                                     help="Choose account for "
+    #                                          "disbursement credit")
+    debit_account_id = fields.Many2one('account.account', 
+                                       string="Debit account", 
+                                       help="Choose account for disbursement debit", 
+                                    default=lambda self: self.env['res.config.settings'].sudo().get_values().get('interest_account_id'))
+    credit_account_id = fields.Many2one('account.account', 
+                                       string="Credit account", 
+                                       help="Choose account for disbursement credit", 
+                                    default=lambda self: self.env['res.config.settings'].sudo().get_values().get('repayment_account_id'))
     reject_reason = fields.Text(string="Reason", help="Displays "
                                                       "rejected reason")
     request = fields.Boolean(string="Request",
@@ -271,3 +279,9 @@ class LoanRequest(models.Model):
                 else:
                     date_start += relativedelta(days=1)
         return True
+
+    def action_set_to_draft(self):
+    """Set the loan request to draft state"""
+    self.write({'state': 'draft'})
+    #self.repayment_lines_ids.unlink()
+    return True
