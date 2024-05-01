@@ -93,9 +93,9 @@ class LoanRequest(models.Model):
                                        sudo().get_values().get('interest_account_id'),
                                        help="Choose account for disbursement debit")
     credit_account_id = fields.Many2one('account.account', 
-                                       default=lambda self: self.env['res.config.settings'].
-                                       sudo().get_values().get('repayment_account_id')
                                        string="Credit account", 
+                                       default=lambda self: self.env['res.config.settings'].
+                                       sudo().get_values().get('repayment_account_id'),
                                        help="Choose account for disbursement credit")
     reject_reason = fields.Text(string="Reason", help="Displays "
                                                       "rejected reason")
