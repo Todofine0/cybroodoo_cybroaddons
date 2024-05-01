@@ -31,8 +31,10 @@ class LoanTypes(models.Model):
 
     name = fields.Char(string='Name', help="LoanType Name")
     loan_amount = fields.Integer(string='Loan Amount', help="Loan Amount")
-    tenure = fields.Integer(string='Tenure', default='1',
-                            help="Amortization period")
+    tenure = fields.Selection([('1', '1'), 
+                                ('7', '7'), 
+                                ('30', '30')], 
+                                string='Tenure', default='1', help="Amortization period")
     tenure_plan = fields.Selection([('monthly', 'Monthly'), 
                                     ('weekly', 'Weekly'), 
                                     ('daily', 'Daily')], 
