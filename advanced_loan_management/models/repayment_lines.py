@@ -65,13 +65,13 @@ class RepaymentLine(models.Model):
     interest_account_id = fields.Many2one('account.account',
                                           string="Interest",
                                           store=True, default=lambda self: self.
-                                      env['ir.config_parameter'].
+                                      env['account.account'].
                                       search([('code', 'like', '200011')]),
                                           help="Account For Interest")
     repayment_account_id = fields.Many2one('account.account',
                                            string="Repayment",
                                            store=True, default=lambda self: self.
-                                      env['ir.config_parameter'].
+                                      env['account.account'].
                                       search([('code', 'like', '200012')]),
                                            help="Account For Repayment")
     invoice = fields.Boolean(string="invoice", default=False,
@@ -140,8 +140,8 @@ class RepaymentLine(models.Model):
     def action_pay_emi(self):
         """Creates invoice for each EMI"""
         time_now = self.date
-        interest_product_id = self.env['ir.config_parameter'].sudo().get_param('advanced_loan_management.interest_product_id')
-        repayment_product_id = self.env['ir.config_parameter'].sudo().get_param('advanced_loan_management.repayment_product_id')
+        interest_product_id = self.env['res.config_parameter'].sudo().get_param('advanced_loan_management.interest_product_id')
+        repayment_product_id = self.env['res.config_parameter'].sudo().get_param('advanced_loan_management.repayment_product_id')
         for rec in self:
             loan_lines_ids = self.env['repayment.line'].search([('loan_id', '=', rec.loan_id.id)], order='date asc')
             for line in loan_lines_ids:
