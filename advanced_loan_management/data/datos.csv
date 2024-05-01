@@ -1,0 +1,4 @@
+"id","name","code","account_type","reconcile","name@es"
+"loan_management_disburse_accounts","Loan Disburse","200019","liability_current","True","Loan Disburse (Desembolso)"
+"loan_management_inrst_accounts","Loan Interest","200011","liability_current","True","Loan Interest (Intereses)"
+"demo_loan_accounts","Loan Repayment","200012","asset_cash","True","Loan Repayment (Repago)"

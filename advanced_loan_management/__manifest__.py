@@ -50,7 +50,7 @@
         'wizard/reject_reason_views.xml',
         'report/loan_management_reports.xml',
         'report/loan_report_templates.xml',
-        'data/datos.xml', # Creado por Raymond
+        'data/datos.csv', # Creado por Raymond
     ],
     'images': ['static/description/banner.jpg'],
     'license': 'AGPL-3',
