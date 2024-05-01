@@ -74,7 +74,7 @@ class LoanRequest(models.Model):
     journal_id = fields.Many2one('account.journal',
                                  string="Journal", default=lambda self: self.
                                       env['account.journal'].
-                                      search([('code', 'like', 'DIS')]),
+                                      search([('code', 'ilike', 'DIS')]),
                                  help="Journal types",
                                  domain="[('type', '=', 'purchase'),"
                                         "('company_id', '=', company_id)]",
@@ -89,13 +89,15 @@ class LoanRequest(models.Model):
     #                                          "disbursement credit")
     debit_account_id = fields.Many2one('account.account', 
                                        string="Debit account", 
-                                       default=lambda self: self.env['res.config.settings'].
-                                       sudo().get_values().get('interest_account_id'),
+                                       default=lambda self: self.
+                                      env['account.account'].
+                                      search([('code', 'ilike', '200011')]),
                                        help="Choose account for disbursement debit")
     credit_account_id = fields.Many2one('account.account', 
                                        string="Credit account", 
-                                       default=lambda self: self.env['res.config.settings'].
-                                       sudo().get_values().get('repayment_account_id'),
+                                       default=lambda self: self.
+                                      env['account.account'].
+                                      search([('code', 'ilike', '200012')]),
                                        help="Choose account for disbursement credit")
     reject_reason = fields.Text(string="Reason", help="Displays "
                                                       "rejected reason")
