@@ -5,7 +5,7 @@
         <record id="loan_management_journals" model="account.journal">
             <field name="company_id" ref="base.main_company"/>
             <field name="name">Disburse</field>
-            <field name="code">DIS</field>
+            <field name="code">DISB</field>
             <field name="type">purchase</field>
         </record>
 
