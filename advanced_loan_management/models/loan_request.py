@@ -72,7 +72,9 @@ class LoanRequest(models.Model):
                                           string="Images",
                                           help="Image proofs")
     journal_id = fields.Many2one('account.journal',
-                                 string="Journal",
+                                 string="Journal", default=lambda self: self.
+                                      env['account.journal'].
+                                      search([('code', 'like', 'DIS')]),
                                  help="Journal types",
                                  domain="[('type', '=', 'purchase'),"
                                         "('company_id', '=', company_id)]",
@@ -87,12 +89,14 @@ class LoanRequest(models.Model):
     #                                          "disbursement credit")
     debit_account_id = fields.Many2one('account.account', 
                                        string="Debit account", 
-                                       help="Choose account for disbursement debit", 
-                                    default=lambda self: self.env['res.config.settings'].sudo().get_values().get('interest_account_id'))
+                                       default=lambda self: self.env['res.config.settings'].
+                                       sudo().get_values().get('interest_account_id'),
+                                       help="Choose account for disbursement debit")
     credit_account_id = fields.Many2one('account.account', 
+                                       default=lambda self: self.env['res.config.settings'].
+                                       sudo().get_values().get('repayment_account_id')
                                        string="Credit account", 
-                                       help="Choose account for disbursement credit", 
-                                    default=lambda self: self.env['res.config.settings'].sudo().get_values().get('repayment_account_id'))
+                                       help="Choose account for disbursement credit")
     reject_reason = fields.Text(string="Reason", help="Displays "
                                                       "rejected reason")
     request = fields.Boolean(string="Request",
