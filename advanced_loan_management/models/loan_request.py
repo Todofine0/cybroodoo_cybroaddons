@@ -188,6 +188,46 @@ class LoanRequest(models.Model):
         """Change to Approved state"""
         self.write({'state': "approved"})
 
+    # def action_disburse_loan(self):
+    #     """Disbursing the loan to customer and creating journal
+    #      entry for the disbursement"""
+    #     self.write({'state': "disbursed"})
+    #     for loan in self:
+    #         amount = loan.disbursal_amount
+    #         loan_name = loan.partner_id.name
+    #         reference = loan.name
+    #         journal_id = loan.journal_id.id
+    #         debit_account_id = loan.debit_account_id.id
+    #         credit_account_id = loan.credit_account_id.id
+    #         date_now = loan.date
+    #         debit_vals = {
+    #             'name': loan_name,
+    #             'account_id': debit_account_id,
+    #             'journal_id': journal_id,
+    #             'date': date_now,
+    #             'debit': amount > 0.0 and amount or 0.0,
+    #             'credit': amount < 0.0 and -amount or 0.0,
+    #         }
+    #         credit_vals = {
+    #             'name': loan_name,
+    #             'account_id': credit_account_id,
+    #             'journal_id': journal_id,
+    #             'date': date_now,
+    #             'debit': amount < 0.0 and -amount or 0.0,
+    #             'credit': amount > 0.0 and amount or 0.0,
+    #         }
+    #         vals = {
+    #             'name': f'DIS / {reference}',
+    #             'narration': reference,
+    #             'ref': reference,
+    #             'journal_id': journal_id,
+    #             'date': date_now,
+    #             'line_ids': [(0, 0, debit_vals), (0, 0, credit_vals)]
+    #         }
+    #         move = self.env['account.move'].create(vals)
+    #         move.action_post()
+    #     return True
+
     def action_disburse_loan(self):
         """Disbursing the loan to customer and creating journal
          entry for the disbursement"""
@@ -197,6 +237,10 @@ class LoanRequest(models.Model):
             loan_name = loan.partner_id.name
             reference = loan.name
             journal_id = loan.journal_id.id
+            if not loan.debit_account_id:
+                loan.debit_account_id = self.env['res.config.settings'].sudo().get_values().get('interest_account_id')
+            if not loan.credit_account_id:
+                loan.credit_account_id = self.env['res.config.settings'].sudo().get_values().get('repayment_account_id')
             debit_account_id = loan.debit_account_id.id
             credit_account_id = loan.credit_account_id.id
             date_now = loan.date
