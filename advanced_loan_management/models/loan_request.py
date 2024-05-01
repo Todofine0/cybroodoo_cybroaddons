@@ -304,7 +304,7 @@ class LoanRequest(models.Model):
     def action_set_to_draft(self):
         """Set the loan request to draft state"""
         self.write({'state': 'draft'})
-        #self.repayment_lines_ids.unlink()
+        self.repayment_lines_ids.unlink()
         return True
 
     def action_compute_repayment(self):
