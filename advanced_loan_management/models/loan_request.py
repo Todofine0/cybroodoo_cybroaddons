@@ -243,6 +243,12 @@ class LoanRequest(models.Model):
                 'context': {'default_loan': self.name}
                 }
 
+    def action_set_to_draft(self):
+        """Set the loan request to draft state"""
+        self.write({'state': 'draft'})
+        #self.repayment_lines_ids.unlink()
+        return True
+
     def action_compute_repayment(self):
         """This automatically create the installment the employee need to pay to
         company based on payment start date and the no of installments.
@@ -279,9 +285,3 @@ class LoanRequest(models.Model):
                 else:
                     date_start += relativedelta(days=1)
         return True
-
-    def action_set_to_draft(self):
-    """Set the loan request to draft state"""
-    self.write({'state': 'draft'})
-    #self.repayment_lines_ids.unlink()
-    return True
