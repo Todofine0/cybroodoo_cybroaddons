@@ -45,6 +45,24 @@
                                 </div>
                             </setting>
                         </block>
+                        <block title="Loan Accounts" name="loan_accounts_setting_container">
+                            <setting string="Loan Accounts" company_dependent="1" help="Accounts to be used for loan management.">
+                                <div class="content-group">
+                                    <div class="mt16">
+                                        <div>
+                                            <label for="interest_account_id" string="Interest Account" class="col-2 o_light_label"/>
+                                            <field name="interest_account_id" />
+                                        </div>
+                                    </div>
+                                    <div class="mt16">
+                                        <div>
+                                            <label for="repayment_account_id" string="Repayment Account" class="col-2 o_light_label"/>
+                                            <field name="repayment_account_id" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </setting>
+                        </block>
                     </app>
             </xpath>
         </field>
