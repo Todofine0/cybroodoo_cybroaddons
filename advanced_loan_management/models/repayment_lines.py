@@ -64,7 +64,7 @@ class RepaymentLine(models.Model):
                                       help="Journal Record")
     interest_account_id = fields.Many2one('account.account',
                                           string="Interest",
-                                          default=self.env['res.config.settings'].sudo().get_values().get('interest_account_id'),
+                                          default=lambda self: self.env['res.config.settings'].sudo().get_values().get('interest_account_id'),
                                           help="Account For Interest")
     repayment_account_id = fields.Many2one('account.account',
                                           string="Repayment",
