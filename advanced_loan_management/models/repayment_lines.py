@@ -65,15 +65,14 @@ class RepaymentLine(models.Model):
                                       help="Journal Record")
     interest_account_id = fields.Many2one('account.account',
                                           string="Interest",
-                                          store=True, 
-                                          default=lambda self: self.env['account.account'].search([('code', 'ilike', 200011)]),
+                                          default=lambda self: self.env['account.account'].search([('code', 'ilike', '200011')]),
                                           help="Account For Interest",
                                           domain="[('code', 'ilike', '200011'),"
                                         "('company_id', '=', company_id)]")
     repayment_account_id = fields.Many2one('account.account',
                                           string="Repayment",
                                           store=True, 
-                                          default=lambda self: self.env['account.account'].search([('code', 'ilike', 'loanre')]),
+                                          default=lambda self: self.env['account.account'].search([('code', 'ilike', '200012')]),
                                           help="Account For Repayment",
                                           domain="[('code', 'ilike', '200012'),"
                                         "('company_id', '=', company_id)]")
