@@ -65,14 +65,14 @@ class RepaymentLine(models.Model):
                                       help="Journal Record")
     interest_account_id = fields.Many2one('account.account',
                                           string="Interest",
-                                          default=lambda self: self.env['account.account'].search([('code', '=', '200011')]),
+                                          default=lambda self: self.env['account.account'].search([('code', 'like', '200011')]),
                                           help="Account For Interest",
                                           domain="[('code', 'ilike', '200011'),"
                                         "('company_id', '=', company_id)]")
     repayment_account_id = fields.Many2one('account.account',
                                           string="Repayment",
                                           store=True, 
-                                          default=lambda self: self.env['account.account'].search([('code', '==', '200012')]),
+                                          default=lambda self: self.env['account.account'].search([('code', 'ilike', '200012')]),
                                           help="Account For Repayment",
                                           domain="[('code', 'ilike', '200012'),"
                                         "('company_id', '=', company_id)]")
@@ -144,6 +144,8 @@ class RepaymentLine(models.Model):
         time_now = self.date
         interest_product_id = self.env['ir.config_parameter'].sudo().get_param('advanced_loan_management.interest_product_id')
         repayment_product_id = self.env['ir.config_parameter'].sudo().get_param('advanced_loan_management.repayment_product_id')
+        interest_account_id = self.env['ir.config_parameter'].sudo().get_param('advanced_loan_management.interest_account_id')
+        repayment_account_id = self.env['ir.config_parameter'].sudo().get_param('advanced_loan_management.repayment_account_id')
         for rec in self:
             loan_lines_ids = self.env['repayment.line'].search([('loan_id', '=', rec.loan_id.id)], order='date asc')
             for line in loan_lines_ids:
@@ -175,14 +177,14 @@ class RepaymentLine(models.Model):
                         'price_unit': rec.amount,
                         'product_id': repayment_product_id,
                         'name': 'Repayment',
-                        'account_id': rec.repayment_account_id.id,
+                        'account_id': repayment_account_id,
                         'quantity': 1,
                     }),
                     (0, 0, {
                         'price_unit': rec.interest_amount,
                         'product_id': interest_product_id,
                         'name': 'Interest amount',
-                        'account_id': rec.interest_account_id.id,
+                        'account_id': interest_account_id,
                         'quantity': 1,
                     }),
                 ],
