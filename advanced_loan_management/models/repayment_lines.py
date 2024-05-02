@@ -20,6 +20,7 @@
 #
 ################################################################################
 from odoo import fields, models
+from odoo.tools.translate import _
 
 
 class RepaymentLine(models.Model):
