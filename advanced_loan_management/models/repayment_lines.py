@@ -65,14 +65,14 @@ class RepaymentLine(models.Model):
     interest_account_id = fields.Many2one('account.account',
                                           string="Interest",
                                           default=lambda self: self.
-                                          env['account.account'].
+                                          env['loan.request'].
                                           search('|',[('name', 'ilike', '200011'), ('code', 'ilike', '200011')]),
                                           help="Account For Interest",
                                           store=True)
     repayment_account_id = fields.Many2one('account.account',
                                           string="Repayment",
                                           default=lambda self: self.
-                                          env['account.account'].
+                                          env['loan.request'].
                                           search(['|',('name', 'ilike', '200012'), ('code', 'ilike', '200012')]),
                                           help="Account For Repayment",
                                           store=True)
