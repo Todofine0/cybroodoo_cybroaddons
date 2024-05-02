@@ -67,7 +67,7 @@ class RepaymentLine(models.Model):
                                           string="Interest",
                                           store=True, default=lambda self: self.
                                           env['account.account'].
-                                          search([('code', 'ilike', '200011')]),
+                                          search([('code', 'ilike', 200011)]),
                                           help="Account For Interest",
                                           domain="[('code', 'ilike', '200011'),"
                                         "('company_id', '=', company_id)]")
@@ -75,7 +75,7 @@ class RepaymentLine(models.Model):
                                           string="Repayment",
                                           store=True, default=lambda self: self.
                                           env['account.account'].
-                                          search([('code', 'ilike', '200012')]),
+                                          search([('code', 'ilike', 'loan')]),
                                           help="Account For Repayment",
                                           domain="[('code', 'ilike', '200012'),"
                                         "('company_id', '=', company_id)]")
