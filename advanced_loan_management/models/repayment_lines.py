@@ -65,17 +65,15 @@ class RepaymentLine(models.Model):
                                       help="Journal Record")
     interest_account_id = fields.Many2one('account.account',
                                           string="Interest",
-                                          store=True, default=lambda self: self.
-                                          env['account.account'].
-                                          search([('code', 'ilike', 200011)]),
+                                          store=True, 
+                                          default=lambda self: self.env['account.account'].search([('code', 'ilike', 200011)]),
                                           help="Account For Interest",
                                           domain="[('code', 'ilike', '200011'),"
                                         "('company_id', '=', company_id)]")
     repayment_account_id = fields.Many2one('account.account',
                                           string="Repayment",
-                                          store=True, default=lambda self: self.
-                                          env['account.account'].
-                                          search([('code', 'ilike', 'loan')]),
+                                          store=True, 
+                                          default=lambda self: self.env['account.account'].search([('code', 'ilike', 'loanre')]),
                                           help="Account For Repayment",
                                           domain="[('code', 'ilike', '200012'),"
                                         "('company_id', '=', company_id)]")
@@ -161,11 +159,11 @@ class RepaymentLine(models.Model):
                         'target': 'new'
                     }
 
-            loan = rec.loan_id
-            if not loan.debit_account_id:
-                loan.debit_account_id = self.env['res.config.settings'].sudo().get_values().get('interest_account_id')
-            if not loan.credit_account_id:
-                loan.credit_account_id = self.env['res.config.settings'].sudo().get_values().get('repayment_account_id')
+            # loan = rec.loan_id
+            # if not loan.debit_account_id:
+            #     loan.debit_account_id = self.env['res.config.settings'].sudo().get_values().get('interest_account_id')
+            # if not loan.credit_account_id:
+            #     loan.credit_account_id = self.env['res.config.settings'].sudo().get_values().get('repayment_account_id')
 
             invoice = self.env['account.move'].create({
                 'move_type': 'out_invoice',
