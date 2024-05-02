@@ -65,12 +65,11 @@ class RepaymentLine(models.Model):
     interest_account_id = fields.Many2one('account.account',
                                           string="Interest",
                                           store=True, 
-                                          default=lambda self: self.env['res.config.settings'].sudo().get_values().get('interest_account_id'),
+                                          default=lambda self: self.env['ir.config_parameter'].sudo().get_param('advanced_loan_management.interest_account_id'),
                                           help="Account For Interest")
     repayment_account_id = fields.Many2one('account.account',
                                           string="Repayment",
-                                          store=True,
-                                          default=lambda self: self.env['account.account'].search([('code', 'ilike', '200012')]),
+                                          default=lambda self: self.env['ir.config_parameter'].sudo().get_param('advanced_loan_management.repayment_account_id'),
                                           help="Account For Repayment")
     invoice = fields.Boolean(string="invoice", default=False,
                              help="For monitoring the record")
