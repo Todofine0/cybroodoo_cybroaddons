@@ -91,13 +91,13 @@ class LoanRequest(models.Model):
                                        string="Debit account", 
                                        default=lambda self: self.
                                       env['account.account'].
-                                      search([('code', 'ilike', '200019')]),
+                                      search([('code', 'ilike', '200012')]),
                                        help="Choose account for disbursement debit")
     credit_account_id = fields.Many2one('account.account', 
                                        string="Credit account", 
                                        default=lambda self: self.
                                       env['account.account'].
-                                      search([('code', 'ilike', '200019')]),
+                                      search([('code', 'ilike', '1111001')]),
                                        help="Choose account for disbursement credit")
     reject_reason = fields.Text(string="Reason", help="Displays "
                                                       "rejected reason")
