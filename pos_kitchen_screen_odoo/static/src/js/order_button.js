@@ -33,8 +33,6 @@ setup() {
     async submitOrder() {
     var line = []
     var self = this;
-
-
         if (!this.clicked) {
             this.clicked = true;
             try {
