@@ -208,26 +208,26 @@ class DbBackupConfigure(models.Model):
          operations for connection test"""
         if self.aws_access_key and self.aws_secret_access_key:
             try:
-                bo3 = boto3.client(
+                s3_client = boto3.client(
                     's3',
                     aws_access_key_id=self.aws_access_key,
-                    aws_secret_access_key=self.aws_secret_access_key)
-                response = bo3.list_buckets()
-                for bucket in response['Buckets']:
-                    if self.bucket_file_name == bucket['Name']:
-                        self.active = True
-                        self.hide_active = True
-                        return {
-                            'type': 'ir.actions.client',
-                            'tag': 'display_notification',
-                            'params': {
-                                'type': 'success',
-                                'title': _("Connection Test Succeeded!"),
-                                'message': _(
-                                    "Everything seems properly set up!"),
-                                'sticky': False,
-                            }
+                    aws_secret_access_key=self.aws_secret_access_key
+                )
+                response = s3_client.head_bucket(Bucket=self.bucket_file_name)
+                if response['ResponseMetadata']['HTTPStatusCode'] == 200:
+                    self.active = True
+                    self.hide_active = True
+                    return {
+                        'type': 'ir.actions.client',
+                        'tag': 'display_notification',
+                        'params': {
+                            'type': 'success',
+                            'title': _("Connection Test Succeeded!"),
+                            'message': _(
+                                "Everything seems properly set up!"),
+                            'sticky': False,
                         }
+                    }
                 raise UserError(
                     _("Bucket not found. Please check the bucket name and"
                       " try again."))
@@ -881,7 +881,7 @@ class DbBackupConfigure(models.Model):
                                 for item in nc.list(folder_path):
                                     backup_file_name = item.path.split("/")[-1]
                                     backup_date_str = \
-                                        backup_file_name.split("_")[2]
+                                        backup_file_name.split("_")[1]
                                     backup_date = fields.datetime.strptime(
                                         backup_date_str, '%Y-%m-%d').date()
                                     if (fields.date.today() - backup_date).days \
@@ -1025,7 +1025,7 @@ class DbBackupConfigure(models.Model):
         if backup_format == 'zip':
             with tempfile.TemporaryDirectory() as dump_dir:
                 filestore = odoo.tools.config.filestore(db_name)
-                cmd.append('--file=' + os.path.join(dump_dir, 'dump.sql'))
+                cmd.insert(-1,'--file=' + os.path.join(dump_dir, 'dump.sql'))
                 subprocess.run(cmd, env=env, stdout=subprocess.DEVNULL,
                                stderr=subprocess.STDOUT, check=True)
                 if os.path.exists(filestore):
@@ -1048,7 +1048,7 @@ class DbBackupConfigure(models.Model):
                     t.seek(0)
                     return t
         else:
-            cmd.append('--format=c')
+            cmd.insert(-1,'--format=c')
             process = subprocess.Popen(cmd, env=env, stdout=subprocess.PIPE)
             stdout, _ = process.communicate()
             if stream:

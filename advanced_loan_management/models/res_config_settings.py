@@ -36,11 +36,3 @@ class ResConfigSettings(models.TransientModel):
                                            config_parameter="advanced_loan_management.repayment_product_id",
                                            help="Product For Repayment "
                                                 "To Create Invoice Lines")
-    interest_account_id = fields.Many2one('account.account', string="Interest Account",
-                                          config_parameter='advanced_loan_management.interest_account_id',
-                                          default=lambda self: self.env['account.account'].search([('code', 'ilike', '200011')]),
-                                          help="Account to be used for interest (200111 liability_current)")
-    repayment_account_id = fields.Many2one('account.account', string="Repayment Account",
-                                           config_parameter='advanced_loan_management.repayment_account_id',
-                                           default=lambda self: self.env['account.account'].search([('code', 'ilike', '200012')]),
-                                           help="Account to be used for repayment (200112 asset_cash)")

@@ -20,7 +20,6 @@
 #
 ################################################################################
 from odoo import fields, models
-from odoo.tools.translate import _
 
 
 class RepaymentLine(models.Model):
@@ -65,92 +64,31 @@ class RepaymentLine(models.Model):
                                       help="Journal Record")
     interest_account_id = fields.Many2one('account.account',
                                           string="Interest",
-                                          default=lambda self: self.env['account.account'].search([('code', 'like', '200011')]),
-                                          help="Account For Interest",
-                                          domain="[('code', 'ilike', '200011'),"
-                                        "('company_id', '=', company_id)]")
+                                          store=True,
+                                          help="Account For Interest")
     repayment_account_id = fields.Many2one('account.account',
-                                          string="Repayment",
-                                          store=True, 
-                                          default=lambda self: self.env['account.account'].search([('code', 'ilike', '200012')]),
-                                          help="Account For Repayment",
-                                          domain="[('code', 'ilike', '200012'),"
-                                        "('company_id', '=', company_id)]")
+                                           string="Repayment",
+                                           store=True,
+                                           help="Account For Repayment")
     invoice = fields.Boolean(string="invoice", default=False,
                              help="For monitoring the record")
-
-    # def action_pay_emi(self):
-    #     """Creates invoice for each EMI"""
-    #     time_now = self.date
-    #     # interest_product_id = self.env.ref('loan_journal_data.loan_management_interest').id
-    #     # repayment_product_id = self.env.ref('loan_journal_data.loan_management_repayment').id
-    #     interest_product_id = self.env['res.config.settings'].sudo().get_values().get('interest_product_id')
-    #     repayment_product_id = self.env['res.config.settings'].sudo().get_values().get('repayment_product_id')
-    #     for rec in self:
-    #         loan_lines_ids = self.env['repayment.line'].search(
-    #             [('loan_id', '=', rec.loan_id.id)], order='date asc')
-    #         for line in loan_lines_ids:
-    #             if line.date < rec.date and line.state in \
-    #                     ('unpaid', 'invoiced'):
-    #                 message_id = self.env['message.popup'].create(
-    #                     {'message': (
-    #                         "You have pending amounts")})
-    #                 return {
-    #                     'name': 'Repayment',
-    #                     'type': 'ir.actions.act_window',
-    #                     'view_mode': 'form',
-    #                     'res_model': 'message.popup',
-    #                     'res_id': message_id.id,
-    #                     'target': 'new'
-    #                 }
-
-    #     invoice = self.env['account.move'].create({
-    #         'move_type': 'out_invoice',
-    #         'invoice_date': time_now,
-    #         'partner_id': self.partner_id.id,
-    #         'currency_id': self.company_id.currency_id.id,
-    #         'payment_reference': self.name,
-    #         'invoice_line_ids': [
-    #             (0, 0, {
-    #                 'price_unit': self.amount,
-    #                 'product_id': repayment_product_id,
-    #                 'name': 'Repayment',
-    #                 'account_id': self.repayment_account_id.id,
-    #                 'quantity': 1,
-    #             }),
-    #             (0, 0, {
-    #                 'price_unit': self.interest_amount,
-    #                 'product_id': interest_product_id,
-    #                 'name': 'Interest amount',
-    #                 'account_id': self.interest_account_id.id,
-    #                 'quantity': 1,
-    #             }),
-    #         ],
-    #     })
-    #     if invoice:
-    #         self.invoice = True
-    #         self.write({'state': 'invoiced'})
-
-    #     return {
-    #         'name': 'Invoice',
-    #         'res_model': 'account.move',
-    #         'res_id': invoice.id,
-    #         'type': 'ir.actions.act_window',
-    #         'view_mode': 'form',
-    #     }
 
     def action_pay_emi(self):
         """Creates invoice for each EMI"""
         time_now = self.date
-        interest_product_id = self.env['ir.config_parameter'].sudo().get_param('advanced_loan_management.interest_product_id')
-        repayment_product_id = self.env['ir.config_parameter'].sudo().get_param('advanced_loan_management.repayment_product_id')
-        interest_account_id = self.env['ir.config_parameter'].sudo().get_param('advanced_loan_management.interest_account_id')
-        repayment_account_id = self.env['ir.config_parameter'].sudo().get_param('advanced_loan_management.repayment_account_id')
+        interest_product_id = self.env['ir.config_parameter'].sudo().get_param(
+            'advanced_loan_management.interest_product_id')
+        repayment_product_id = self.env['ir.config_parameter'].sudo().get_param(
+            'advanced_loan_management.repayment_product_id')
         for rec in self:
-            loan_lines_ids = self.env['repayment.line'].search([('loan_id', '=', rec.loan_id.id)], order='date asc')
+            loan_lines_ids = self.env['repayment.line'].search(
+                [('loan_id', '=', rec.loan_id.id)], order='date asc')
             for line in loan_lines_ids:
-                if line.date < rec.date and line.state in ('unpaid', 'invoiced'):
-                    message_id = self.env['message.popup'].create({'message': _("You have pending amounts")})
+                if line.date < rec.date and line.state in \
+                        ('unpaid', 'invoiced'):
+                    message_id = self.env['message.popup'].create(
+                        {'message': (
+                            "You have pending amounts")})
                     return {
                         'name': 'Repayment',
                         'type': 'ir.actions.act_window',
@@ -160,52 +98,48 @@ class RepaymentLine(models.Model):
                         'target': 'new'
                     }
 
-            # loan = rec.loan_id
-            # if not loan.debit_account_id:
-            #     loan.debit_account_id = self.env['res.config.settings'].sudo().get_values().get('interest_account_id')
-            # if not loan.credit_account_id:
-            #     loan.credit_account_id = self.env['res.config.settings'].sudo().get_values().get('repayment_account_id')
-
-            invoice = self.env['account.move'].create({
-                'move_type': 'out_invoice',
-                'invoice_date': time_now,
-                'partner_id': rec.partner_id.id,
-                'currency_id': rec.company_id.currency_id.id,
-                'payment_reference': rec.name,
-                'invoice_line_ids': [
-                    (0, 0, {
-                        'price_unit': rec.amount,
-                        'product_id': repayment_product_id,
-                        'name': 'Repayment',
-                        'account_id': repayment_account_id,
-                        'quantity': 1,
-                    }),
-                    (0, 0, {
-                        'price_unit': rec.interest_amount,
-                        'product_id': interest_product_id,
-                        'name': 'Interest amount',
-                        'account_id': interest_account_id,
-                        'quantity': 1,
-                    }),
-                ],
-            })
-            if invoice:
-                rec.invoice = True
-                rec.write({'state': 'invoiced'})
-
-            return {
-                'name': 'Invoice',
-                'res_model': 'account.move',
-                'res_id': invoice.id,
-                'type': 'ir.actions.act_window',
-                'view_mode': 'form',
-            }
+        invoice = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'invoice_date': time_now,
+            'partner_id': self.partner_id.id,
+            'currency_id': self.company_id.currency_id.id,
+            'payment_reference': self.name,
+            'invoice_line_ids': [
+                (0, 0, {
+                    'price_unit': self.amount,
+                    'product_id': repayment_product_id,
+                    'name': 'Repayment',
+                    'account_id': self.repayment_account_id.id,
+                    'quantity': 1,
+                }),
+                (0, 0, {
+                    'price_unit': self.interest_amount,
+                    'product_id': interest_product_id,
+                    'name': 'Interest amount',
+                    'account_id': self.interest_account_id.id,
+                    'quantity': 1,
+                }),
+            ],
+        })
+        if invoice:
+            invoice.action_post()
+            self.invoice=True
+            self.write({'state':'invoiced'})
+        return {
+            'name': 'Invoice',
+            'res_model': 'account.move',
+            'res_id': invoice.id,
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+        }
 
     def action_view_invoice(self):
         """To view the invoices"""
         invoice = self.env['account.move'].search([
-            ('payment_reference', '=', self.name,)
+            ('payment_reference', '=', self.name)
         ])
+        self.invoice = True
+
         return {
             'name': 'Invoice',
             'res_model': 'account.move',

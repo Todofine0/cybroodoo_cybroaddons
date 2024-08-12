@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 ################################################################################
 #
 #    Cybrosys Technologies Pvt. Ltd.
@@ -31,14 +30,10 @@ class LoanTypes(models.Model):
 
     name = fields.Char(string='Name', help="LoanType Name")
     loan_amount = fields.Integer(string='Loan Amount', help="Loan Amount")
-    tenure = fields.Selection([('1', '1'), 
-                                ('7', '7'), 
-                                ('30', '30')], 
-                                string='Tenure', default='1', help="Amortization period")
-    tenure_plan = fields.Selection([('monthly', 'Monthly'), 
-                                    ('weekly', 'Weekly'), 
-                                    ('daily', 'Daily')], 
-                                string="Tenure Plan", default='monthly', help="EMI payment plan")
+    tenure = fields.Integer(string='Tenure', default='1',
+                            help="Amortization period")
+    tenure_plan = fields.Char(string="Tenure Plan", default='monthly',
+                              readonly='True', help="EMI payment plan")
     interest_rate = fields.Float(string='Interest Rate',
                                  help="Loan Interest Rate")
     disbursal_amount = fields.Float(string='Disbursal Amount',

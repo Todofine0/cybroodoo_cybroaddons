@@ -21,7 +21,7 @@
 ################################################################################
 {
     'name': 'Odoo17 Dynamic Accounting Reports',
-    'version': '17.0.1.0.0',
+    'version': '17.0.1.1.1',
     'category': 'Accounting',
     'summary': "Odoo 17 Accounting Financial Reports,Dynamic Accounting Reports, Dynamic Financial Reports,Dynamic Report Odoo17, Odoo17,Financial Reports, Odoo17 Accounting,Accounting, Odoo Apps",
     'description': "This module creates dynamic Accounting General Ledger, Trial"
@@ -72,7 +72,7 @@
             'dynamic_accounts_report/static/src/js/tax_report.js',
         ],
     },
-    'images': ['static/description/banner.png'],
+    'images': ['static/description/banner.jpg'],
     'license': 'LGPL-3',
     'installable': True,
     'auto_install': False,
